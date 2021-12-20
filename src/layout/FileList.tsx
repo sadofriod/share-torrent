@@ -19,6 +19,7 @@ const Container = styled.div`
 		& > h3 {
 			display: flex;
 			align-items: center;
+			font-size: 1.1em;
 		}
 		& > div {
 			display: flex;
