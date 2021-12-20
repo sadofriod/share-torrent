@@ -18,7 +18,7 @@ const AppContainer = styled.div`
 		justify-content: space-between;
 		align-items: flex-end;
 		font-family: "Microsoft YaHei";
-		h1 {
+		.headerTitle {
 			margin: 0px;
 			font-size: 3.8em;
 			text-decoration-line: underline;

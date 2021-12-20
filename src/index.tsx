@@ -7,6 +7,12 @@ import reportWebVitals from "./reportWebVitals";
 import CustomTheme from "./components/CustomTheme";
 import StateProvider from "./components/StateProvider";
 
+//font family
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
 ReactDOM.render(
 	<React.StrictMode>
 		<CustomTheme>

@@ -2,8 +2,11 @@ import { List, Collapse, Button } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import FileListItem from "./FileListItem";
+import FileListItem from "../components/FileListItem";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import ObjectStore from "../utils/indexedDB";
+import notice from "../components/functionalToast";
 
 const Container = styled.div`
 	border: 0px solid #505050;
@@ -21,6 +24,10 @@ const Container = styled.div`
 			display: flex;
 			align-items: center;
 			font-size: 14px;
+			& > button {
+				display: flex;
+				align-items: center;
+			}
 		}
 	}
 `;
@@ -28,7 +35,7 @@ const Container = styled.div`
 const FileList: ST.FC<{
 	listData: ST.ListItemOption[];
 }> = ({ suitContent, listData }) => {
-	const { refresh, torrentListTitle } = suitContent;
+	const { refresh, torrentListTitle, export: exportText } = suitContent;
 
 	const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -72,6 +79,20 @@ const FileList: ST.FC<{
 		setOpen(!isOpen);
 	};
 
+	const handleExport = async () => {
+		try {
+			const list = await ObjectStore.getAllList("share");
+			const downloader = document.createElement("a");
+			const blob = new Blob([JSON.stringify(list)], { type: "application/json" });
+			downloader.setAttribute("href", URL.createObjectURL(blob));
+			downloader.download = `torrent_list_${Date.now()}`;
+			downloader.click();
+		} catch (error) {
+			console.log(error);
+			notice.error("export fail");
+		}
+	};
+
 	return (
 		<Container>
 			<div className="list-header" onClick={handleOpen}>
@@ -88,7 +109,11 @@ const FileList: ST.FC<{
 				>
 					<Button>
 						<p>{refresh}</p>
-						<RefreshIcon fontSize="small" />
+						<RefreshIcon style={{ marginTop: "-3px" }} fontSize="small" />
+					</Button>
+					<Button onClick={handleExport} size="small" variant="contained">
+						{exportText}
+						<IosShareIcon style={{ marginTop: "-3px" }} fontSize="small" />
 					</Button>
 				</div>
 			</div>

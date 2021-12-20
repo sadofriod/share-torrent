@@ -8,6 +8,8 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useCallback } from "react";
 import styled from "styled-components";
 import day from "dayjs";
+import { useText } from "../hooks";
+import notice from "./functionalToast";
 
 const FileInformation = styled.div`
 	display: flex;
@@ -20,14 +22,17 @@ const FileInformation = styled.div`
 		font-size: 14px;
 	}
 	.content {
-		flex: 3;
+		flex: 2;
 	}
 	.author {
+		padding-left: 20px;
 		flex: 1;
 	}
 `;
 
-const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, author, operation, uniqueKey, isOpen }) => {
+const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, author, operation, uniqueKey, isOpen, magnetURI }) => {
+	const [{ authorLabel, timeLabel }] = useText();
+
 	const FileType = useCallback(() => {
 		switch (fileType) {
 			case "audio":
@@ -40,7 +45,16 @@ const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, aut
 	}, [fileType]);
 
 	const { setOpen, deleteItem } = operation;
-	console.log(uniqueKey, isOpen);
+
+	const handleCopy = async () => {
+		try {
+			await navigator.clipboard.writeText(magnetURI);
+			notice.success("Copy success");
+		} catch (error) {
+			console.log(error);
+			notice.error("Copy fail: " + error.message);
+		}
+	};
 
 	return (
 		<>
@@ -51,7 +65,7 @@ const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, aut
 						<IconButton edge="end" onClick={() => deleteItem(uniqueKey)}>
 							<DeleteForeverIcon />
 						</IconButton>
-						<IconButton edge="end">
+						<IconButton onClick={handleCopy} edge="end">
 							<ContentCopyIcon />
 						</IconButton>
 					</>
@@ -72,8 +86,8 @@ const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, aut
 			</ListItem>
 			<Collapse in={isOpen}>
 				<FileInformation>
-					<div className="author">{author}</div>
-					<div className="content">{day(lastModified).format("DD/MM/YYYY")}</div>
+					<div className="author">{`${authorLabel}: ${author}`}</div>
+					<div className="content">{`${timeLabel}: ${day(lastModified).format("DD/MM/YYYY")}`}</div>
 				</FileInformation>
 			</Collapse>
 			<Divider />

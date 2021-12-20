@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import "./App.css";
-import FileList from "./components/FileList";
-import { Box, Button, IconButton, Tab, Tabs, TabsProps } from "@mui/material";
+import FileList from "./layout/FileList";
+import { Box, Button, IconButton, Tab, Tabs, TabsProps, Typography } from "@mui/material";
 import { useState } from "react";
 import notice from "./components/functionalToast";
 import { createTorrent, formatTorrentListItem } from "./utils/createTorrent";
@@ -72,7 +72,9 @@ const App: React.FC = () => {
 	return (
 		<AppContainer>
 			<div className="header">
-				<h1 dangerouslySetInnerHTML={{ __html: text.appTitle }}></h1>
+				<Typography dangerouslySetInnerHTML={{ __html: text.appTitle }} variant="h2" className="headerTitle" component="h2">
+					{/* <h1 dangerouslySetInnerHTML></h1> */}
+				</Typography>
 				<div>
 					<IconButton onClick={handleLanguageChange}>
 						<TranslateIcon />

@@ -38,6 +38,8 @@ declare namespace ST {
 		authorLabel: string;
 		timeLabel: string;
 		languageType: string;
+		export: string;
+		import: string;
 	}
 
 	type FileChoosenTips = "noFile" | "uploadSuccessful" | "uploadFailure" | "processing" | "multiFiles";

@@ -13,11 +13,13 @@ export const zh: ST.SuitContent = {
 	authorLabel: "作者",
 	timeLabel: "上传时间",
 	languageType: "EN",
+	export: "导出",
+	import: "导入",
 };
 export const en: ST.SuitContent = {
 	refresh: "Get new",
 	torrentListTitle: "Torrent list",
-	appTitle: "Share Torrent",
+	appTitle: "Share <br/> Torrent",
 	upload: "Upload",
 	noFile: "Should select files (audio or image)",
 	multiFiles: "Multi-files were selected",
@@ -29,4 +31,6 @@ export const en: ST.SuitContent = {
 	authorLabel: "author",
 	timeLabel: "upload time",
 	languageType: "中文",
+	export: "export",
+	import: "import",
 };
