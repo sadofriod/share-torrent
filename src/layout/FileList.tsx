@@ -7,6 +7,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import ObjectStore from "../utils/indexedDB";
 import notice from "../components/functionalToast";
+import { useTotalSpeed } from "../hooks";
 
 const Container = styled.div`
 	border: 0px solid #505050;
@@ -41,6 +42,8 @@ const FileList: ST.FC<{
 	const [isOpen, setOpen] = useState<boolean>(false);
 
 	const [openItemSet, setOpenItem] = useState<{ [key: string]: number }>({});
+
+	const speed = useTotalSpeed("upload");
 
 	const handleOpenItem: ST.ListItemOperation["setOpen"] = (key) => {
 		if (key in openItemSet) {
@@ -93,6 +96,7 @@ const FileList: ST.FC<{
 			notice.error("export fail");
 		}
 	};
+	console.log(speed);
 
 	return (
 		<Container>

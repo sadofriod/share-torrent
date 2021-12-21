@@ -6,6 +6,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useCallback } from "react";
+import DownloadIcon from "@mui/icons-material/Download";
 import styled from "styled-components";
 import day from "dayjs";
 import { useText } from "../hooks";
@@ -30,7 +31,7 @@ const FileInformation = styled.div`
 	}
 `;
 
-const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, author, operation, uniqueKey, isOpen, magnetURI }) => {
+const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, author, operation, uniqueKey, isOpen, magnetURI, fileUrl }) => {
 	const [{ authorLabel, timeLabel }] = useText();
 
 	const FileType = useCallback(() => {
@@ -56,6 +57,12 @@ const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, aut
 		}
 	};
 
+	const handleDownload = () => {
+		const downloader = document.createElement("a");
+		downloader.setAttribute("href", fileUrl);
+		downloader.click();
+	};
+
 	return (
 		<>
 			<ListItem
@@ -67,6 +74,9 @@ const FileListItem: React.FC<ST.ListItem> = ({ fileType, name, lastModified, aut
 						</IconButton>
 						<IconButton onClick={handleCopy} edge="end">
 							<ContentCopyIcon />
+						</IconButton>
+						<IconButton onClick={handleDownload} edge="end">
+							<DownloadIcon />
 						</IconButton>
 					</>
 				}

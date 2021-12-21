@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../components/StateProvider";
 import { en, zh } from "../text";
+import { client } from "../utils/createTorrent";
 
 export const useText = (): [ST.SuitContent, (type: ST.LanguageType) => void] => {
 	const { state, dispatch } = useContext(Context);
@@ -20,4 +21,19 @@ export const useText = (): [ST.SuitContent, (type: ST.LanguageType) => void] => 
 		}
 	};
 	return [state.languageType, change];
+};
+
+export const useTotalSpeed = (type: "download" | "upload") => {
+	const [speed, setSpeed] = useState<number>(0);
+	const timer = setInterval(() => {
+		setSpeed(type === "download" ? client.downloadSpeed : client.uploadSpeed);
+	}, 1000);
+
+	useEffect(() => {
+		return () => {
+			clearInterval(timer);
+		};
+	}, []);
+
+	return speed;
 };

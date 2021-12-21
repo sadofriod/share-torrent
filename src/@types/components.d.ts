@@ -15,7 +15,7 @@ declare namespace ST {
 		lastModified: number;
 		author: string;
 		fileType: "image" | "audio" | "hybrid";
-
+		fileUrl: string;
 		//Torrent ID
 		uniqueKey: string;
 		magnetURI: string;
@@ -85,6 +85,7 @@ declare namespace ST {
 declare namespace STUtils {
 	interface TempTorrentListItem extends Partial<File> {
 		magnetURI: string;
+		fileUrl: string;
 		id: string;
 	}
 
