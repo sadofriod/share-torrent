@@ -33,7 +33,7 @@ export const useTotalSpeed = (type: "download" | "upload") => {
 		return () => {
 			clearInterval(timer);
 		};
-	}, []);
+	}, []); //eslint-disable-line
 
 	return speed;
 };

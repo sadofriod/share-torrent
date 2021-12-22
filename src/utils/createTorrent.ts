@@ -1,4 +1,9 @@
 import WebTorrent from "webtorrent";
+import { getTrackersList } from ".";
+
+// console.log();
+
+getTrackersList().then((data) => console.log(data.split("\n").filter((item) => item)));
 
 export const client = new WebTorrent();
 
