@@ -1,10 +1,10 @@
 import React from "react";
 
 const TabPanel: React.FC<Partial<ST.TabPanelProps>> = (props) => {
-	const { activeIndex, index, children } = props;
-	const isHidden = activeIndex !== index;
+	const { activeTabIndex, index, children } = props;
+	const isHidden = activeTabIndex !== index;
 	const formatProps = Object.assign({}, props);
-	delete formatProps.activeIndex;
+	delete formatProps.activeTabIndex;
 
 	return (
 		<div {...formatProps} style={{ visibility: isHidden ? "hidden" : "visible" }}>

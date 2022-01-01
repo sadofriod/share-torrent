@@ -1,9 +1,7 @@
 import WebTorrent from "webtorrent";
-import { getTrackersList } from ".";
+// import { getTrackersList } from ".";
 
 // console.log();
-
-getTrackersList().then((data) => console.log(data.split("\n").filter((item) => item)));
 
 export const client = new WebTorrent();
 
@@ -14,20 +12,32 @@ export const client = new WebTorrent();
  */
 export const createTorrent: STUtils.CreateTorrent = async (sourceFiles) => {
 	const isMultiFiles = sourceFiles.length > 1;
+	// const trackList = (await getTrackersList())
+	// 	.split("\n")
+	// 	.filter((item) => item)
+	// 	.map((item) => item.replace("/announce", ""));
+	// const trackList: any[] = [];
+
 	const listItem = await new Promise<STUtils.TempTorrentListItem>((res, rej) => {
-		client.seed(sourceFiles, (torrent) => {
-			const { files, magnetURI, name, infoHash, torrentFileBlobURL } = torrent;
-			const type = isMultiFiles ? "hybrid" : sourceFiles[0].type;
-			const names = isMultiFiles ? files.map(({ name }) => name).join(" | ") : name;
-			res({
-				name: names,
-				magnetURI,
-				id: infoHash,
-				fileUrl: torrentFileBlobURL,
-				lastModified: Date.now(),
-				type,
-			});
-		});
+		client.seed(
+			sourceFiles,
+			{
+				announce: ["udp://112.74.165.209:8000", "ws://112.74.165.209:8888", "http://112.74.165.209:8888", "http://112.74.165.209:8888/announce"],
+			},
+			(torrent) => {
+				const { files, magnetURI, name, infoHash, torrentFileBlobURL } = torrent;
+				const type = isMultiFiles ? "hybrid" : sourceFiles[0].type;
+				const names = isMultiFiles ? files.map(({ name }) => name).join(" | ") : name;
+				res({
+					name: names,
+					magnetURI,
+					id: infoHash,
+					fileUrl: torrentFileBlobURL,
+					lastModified: Date.now(),
+					type,
+				});
+			}
+		);
 		client.on("error", (err) => rej(err));
 	});
 	return listItem;

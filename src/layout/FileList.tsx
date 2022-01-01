@@ -7,7 +7,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import ObjectStore from "../utils/indexedDB";
 import notice from "../components/functionalToast";
-import { useTotalSpeed } from "../hooks";
+import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
+import { useStore } from "../hooks";
 
 const Container = styled.div`
 	border: 0px solid #505050;
@@ -43,7 +44,7 @@ const FileList: ST.FC<{
 
 	const [openItemSet, setOpenItem] = useState<{ [key: string]: number }>({});
 
-	const speed = useTotalSpeed("upload");
+	const [{ shareList }, dispatch] = useStore();
 
 	const handleOpenItem: ST.ListItemOperation["setOpen"] = (key) => {
 		if (key in openItemSet) {
@@ -56,8 +57,17 @@ const FileList: ST.FC<{
 		}
 	};
 
-	const handleDeleteItem: ST.ListItemOperation["deleteItem"] = (key) => {
-		console.log(key);
+	const handleDeleteItem: ST.ListItemOperation["deleteItem"] = async (key) => {
+		try {
+			const list = shareList.filter(({ uniqueKey }) => key !== uniqueKey);
+
+			await ObjectStore.deleteListItem("share", key);
+			dispatch({ type: "SET_SHARE_LIST", payload: list });
+
+			notice.success("delete successed");
+		} catch (error: any) {
+			notice.error(error.message);
+		}
 	};
 
 	const renderList = () => {
@@ -74,9 +84,13 @@ const FileList: ST.FC<{
 			};
 		});
 
-		return formatListData.map((item) => {
-			return <FileListItem key={item.uniqueKey} {...item} />;
-		});
+		return formatListData.length ? (
+			formatListData.map((item) => {
+				return <FileListItem key={item.uniqueKey} {...item} />;
+			})
+		) : (
+			<DoDisturbAltIcon />
+		);
 	};
 
 	const handleOpen = () => {
@@ -96,7 +110,6 @@ const FileList: ST.FC<{
 			notice.error("export fail");
 		}
 	};
-	console.log(speed);
 
 	return (
 		<Container>

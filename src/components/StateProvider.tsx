@@ -2,6 +2,8 @@ import React, { createContext, useReducer } from "react";
 import { zh } from "../text";
 const initialState: ST.GlobalState.ShareState = {
 	languageType: zh,
+	shareList: [],
+	activeTabIndex: 0,
 };
 
 export const Context = createContext<{
@@ -15,7 +17,17 @@ const reducer = (state: ST.GlobalState.ShareState, action: ST.GlobalState.Action
 	switch (type) {
 		case "CHANGE_LANGUAGE":
 			return { ...state, languageType: action.payload as ST.SuitContent };
-
+		case "SET_SHARE_LIST":
+			return {
+				...state,
+				shareList: action.payload as ST.GlobalState.ShareState["shareList"],
+			};
+		case "TAB_SWITCH": {
+			return {
+				...state,
+				activeTabIndex: action.payload as number,
+			};
+		}
 		default:
 			return state;
 	}

@@ -39,6 +39,8 @@ declare namespace ST {
 		timeLabel: string;
 		languageType: string;
 		export: string;
+		download: string;
+		downloadPlaceHolder: string;
 		import: string;
 	}
 
@@ -75,7 +77,7 @@ declare namespace ST {
 	}
 
 	interface TabPanelProps<T = {}> extends T {
-		activeIndex: number;
+		activeTabIndex: number;
 		id: string;
 		index: number;
 		"aria-labelledby": string;
